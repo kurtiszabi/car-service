@@ -37,8 +37,7 @@ public class CarServiceImpl implements CarService {
 
   @Override
   public CarReservation reserve(CarReservation reservation) {
-    // TODO Auto-generated method stub
-    return null;
+    return carReservationRepository.save(reservation);
   }
 
 }

@@ -1,14 +1,14 @@
 package com.gmail.at.kurtiszabi.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CarReservation {
 
   private Long id;
 
-  private LocalDate from;
+  private LocalDateTime from;
 
-  private LocalDate to;
+  private LocalDateTime to;
 
   private String user;
   
@@ -22,19 +22,19 @@ public class CarReservation {
     this.id = id;
   }
 
-  public LocalDate getFrom() {
+  public LocalDateTime getFrom() {
     return from;
   }
 
-  public void setFrom(LocalDate from) {
+  public void setFrom(LocalDateTime from) {
     this.from = from;
   }
 
-  public LocalDate getTo() {
+  public LocalDateTime getTo() {
     return to;
   }
 
-  public void setTo(LocalDate to) {
+  public void setTo(LocalDateTime to) {
     this.to = to;
   }
 

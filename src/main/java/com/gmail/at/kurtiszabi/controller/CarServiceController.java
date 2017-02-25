@@ -35,7 +35,8 @@ public class CarServiceController implements CarService {
   }
 
   @Override
-  @RequestMapping(value = "/reservations", method = RequestMethod.POST)
+  @RequestMapping(value = "/cars/{id}/reservations", method = RequestMethod.POST,
+      produces = "application/json")
   public CarReservation reserve(@RequestBody CarReservation reservation) {
     return delegate.reserve(reservation);
   }
