@@ -30,4 +30,10 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
         new HttpHeaders(), HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler({IllegalArgumentException.class})
+  public ResponseEntity<Object> handleIllegalArgumentException(Exception ex, WebRequest request) {
+    return new ResponseEntity<Object>(ImmutableMap.of("message", ex.getMessage()),
+        new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
 }

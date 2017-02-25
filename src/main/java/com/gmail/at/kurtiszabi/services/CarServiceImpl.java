@@ -37,6 +37,14 @@ public class CarServiceImpl implements CarService {
 
   @Override
   public CarReservation reserve(CarReservation reservation) {
+    Long id = reservation.getCar() != null ? reservation.getCar().getId() : 0L;
+    try {
+      Car car = getCar(id);
+      reservation.setCar(car);
+    } catch (NotFoundException ex) {
+      throw new IllegalArgumentException(
+          "Reservation failed with the reason being: " + ex.getMessage());
+    }
     return carReservationRepository.save(reservation);
   }
 
