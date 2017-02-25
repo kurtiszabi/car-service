@@ -2,10 +2,9 @@ package com.gmail.at.kurtiszabi.controller;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +15,7 @@ import com.gmail.at.kurtiszabi.domain.CarReservation;
 import com.gmail.at.kurtiszabi.services.CarService;
 
 @RestController
+@RequestMapping(produces = "application/json")
 public class CarServiceController implements CarService {
 
   @Autowired
@@ -30,7 +30,7 @@ public class CarServiceController implements CarService {
 
   @Override
   @RequestMapping(value = "/cars/{id}", method = RequestMethod.GET)
-  public Car getCar(@PathParam("id") Long id) {
+  public Car getCar(@PathVariable("id") Long id) {
     return delegate.getCar(id);
   }
 
