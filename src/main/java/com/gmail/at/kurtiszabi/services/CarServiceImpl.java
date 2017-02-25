@@ -23,7 +23,7 @@ public class CarServiceImpl implements CarService {
 
   @Override
   public List<Car> getCars() {
-    return null;
+    return carRepository.findAll();
   }
 
   @Override

@@ -1,6 +1,8 @@
 package com.gmail.at.kurtiszabi.config;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,16 +38,54 @@ public class RepositoryConfiguration {
       @Override
       public void afterPropertiesSet() throws Exception {
         LOG.info("Start loading available cars");
-        Car toyota = new Car();
-        CarDetails details = new CarDetails();
-        details.setColor("white");
-        details.setManufacturer("Toyota");
-        details.setModel("RAV4");
-        details.setManufacuted(LocalDate.of(2017, 2, 25));
-        toyota.setDetails(details);
-        carRepository().save(toyota);
+        List<Car> cars = getAvailableCars();
+        cars.forEach(car -> {
+          carRepository().save(car);
+        });
+        LOG.info("Finished loading {} cars", cars.size());
       }
     };
+  }
+
+  private List<Car> getAvailableCars() {
+    List<Car> cars = new LinkedList<>();
+    cars.add(getToyota());
+    cars.add(getDacia());
+    cars.add(getFord());
+    return cars;
+  }
+
+  private Car getFord() {
+    Car ford = new Car();
+    CarDetails details = new CarDetails();
+    details.setColor("maroon");
+    details.setManufacturer("Ford");
+    details.setModel("Lincoln Continental");
+    details.setManufacuted(LocalDate.of(2061, 10, 4));
+    ford.setDetails(details);
+    return ford;
+  }
+
+  private Car getToyota() {
+    Car toyota = new Car();
+    CarDetails details = new CarDetails();
+    details.setColor("white");
+    details.setManufacturer("Toyota");
+    details.setModel("RAV4");
+    details.setManufacuted(LocalDate.of(2017, 2, 25));
+    toyota.setDetails(details);
+    return toyota;
+  }
+
+  private Car getDacia() {
+    Car dacia = new Car();
+    CarDetails details = new CarDetails();
+    details.setColor("blue");
+    details.setManufacturer("Dacia");
+    details.setModel("1300");
+    details.setManufacuted(LocalDate.of(2073, 1, 1));
+    dacia.setDetails(details);
+    return dacia;
   }
 
 }
