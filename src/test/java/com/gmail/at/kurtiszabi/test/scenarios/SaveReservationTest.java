@@ -41,15 +41,14 @@ public class SaveReservationTest extends CarserviceApplicationTests {
 
   @Test
   public void A_testSavingAReservation() {
-    Car car = getCarById(KNOWN_CAR_ID);
-    CarReservation saved = saveReservation(createDefaultReservation(car));
+    CarReservation saved = saveReservation(createDefaultReservation());
     assertThat(saved.getId(), greaterThan(0L));
     reservationId = saved.getId();
   }
 
-  private CarReservation createDefaultReservation(Car car) {
+  private CarReservation createDefaultReservation() {
     CarReservation res = new CarReservation();
-    res.setCar(car);
+    res.setCar(getCarById(KNOWN_CAR_ID));
     res.setUser(CUSTOMER_NAME);
     LocalDateTime now = LocalDateTime.now();
     from = now.plusDays(1);
@@ -84,14 +83,80 @@ public class SaveReservationTest extends CarserviceApplicationTests {
   }
 
   @Test
-  public void testSavingReservationForANonExistingCar() {
+  public void C_testTrySavingEnvelopedReservation() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation reservation = createDefaultReservation();
+    reservation.setFrom(from.plusHours(1));
+    reservation.setTo(to.minusHours(1));
+    Response response = trySavingReservation(reservation);
+    assertAlreadyReserved(response);
+  }
+
+  @Test
+  public void D_testTrySavingEnvelopingReservation() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation reservation = createDefaultReservation();
+    reservation.setFrom(from.minusHours(1));
+    reservation.setTo(to.plusHours(1));
+    Response response = trySavingReservation(reservation);
+    assertAlreadyReserved(response);
+  }
+
+  @Test
+  public void E_testTrySavingReservationInterleavingFromBottom() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation reservation = createDefaultReservation();
+    reservation.setFrom(from.minusDays(1));
+    reservation.setTo(from.plusHours(1));
+    Response response = trySavingReservation(reservation);
+    assertAlreadyReserved(response);
+  }
+
+  @Test
+  public void F_testTrySavingReservationInterleavingFromTop() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation reservation = createDefaultReservation();
+    reservation.setFrom(to.minusHours(1));
+    reservation.setTo(to.plusDays(1));
+    Response response = trySavingReservation(reservation);
+    assertAlreadyReserved(response);
+  }
+
+  @Test
+  public void G_testSavingReservationForANonExistingCar() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation res = createDefaultReservation();
     Car nonExistingCar = new Car();
     nonExistingCar.setId(0L);
-    CarReservation res = createDefaultReservation(nonExistingCar);
+    res.setCar(nonExistingCar);
     Response response = trySavingReservation(res);
     response.then().statusCode(400);
     assertThat(response.body().jsonPath().getString("message"),
-        allOf(containsString("Reservation failed"), containsString("No such car")));
+        allOf(containsString("Reservation failed"), containsString("no such car")));
+  }
+
+  @Test
+  public void H_testSavingReservationBeforeAnExistingOne() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation res = createDefaultReservation();
+    res.setFrom(from.minusDays(2));
+    res.setTo(from.minusDays(1));
+    saveReservation(res);
+  }
+
+  @Test
+  public void I_testSavingReservationAfterAnExistingOne() {
+    assumeThat(reservationId, greaterThan(0L));
+    CarReservation res = createDefaultReservation();
+    res.setFrom(to.plusDays(1));
+    res.setTo(to.plusDays(2));
+    saveReservation(res);
+  }
+
+  private void assertAlreadyReserved(Response response) {
+    response.then().statusCode(400);
+    assertThat(response.body().jsonPath().getString("message"),
+        allOf(containsString("Reservation failed"), containsString("already booked")));
   }
 
   private Response trySavingReservation(CarReservation res) {

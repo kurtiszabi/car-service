@@ -1,6 +1,7 @@
 package com.gmail.at.kurtiszabi.services;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.gmail.at.kurtiszabi.domain.Car;
 import com.gmail.at.kurtiszabi.domain.CarReservation;
@@ -41,8 +42,20 @@ public class CarServiceImpl implements CarService {
     Car car = carRepository.findById(id);
     if (car == null) {
       throw new IllegalArgumentException(
-          "Reservation failed with the reason being: No such car (id=" + id + ")");
+          "Reservation failed with the reason being: no such car (id=" + id + ")");
     }
+    Predicate<CarReservation> predicate = (r) -> r.getCar().equals(car)
+        && (!r.getTo().isBefore(reservation.getFrom())
+            && !r.getFrom().isAfter(reservation.getTo()));
+
+    ;
+    boolean exists = carReservationRepository.exists(predicate);
+    if (exists) {
+      throw new IllegalArgumentException(
+          "Reservation failed with the reason being: already booked");
+    }
+
+
     return carReservationRepository.save(reservation);
   }
 
