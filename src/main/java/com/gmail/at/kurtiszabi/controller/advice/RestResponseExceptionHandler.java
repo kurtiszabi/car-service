@@ -14,16 +14,6 @@ import com.google.common.collect.ImmutableMap;
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private static class Fault {
-
-    private final String message;
-
-    public Fault(String message) {
-      super();
-      this.message = message;
-    }
-  }
-
   @ExceptionHandler({NotFoundException.class})
   public ResponseEntity<Object> handleResourceMissingException(Exception ex, WebRequest request) {
     return new ResponseEntity<Object>(ImmutableMap.of("message", ex.getMessage()),

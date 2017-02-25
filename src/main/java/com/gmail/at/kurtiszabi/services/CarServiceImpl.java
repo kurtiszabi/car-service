@@ -27,25 +27,29 @@ public class CarServiceImpl implements CarService {
   }
 
   @Override
-  public Car getCar(Long id) {
+  public Car getCar(long id) {
     Car car = carRepository.findById(id);
     if (car == null) {
-      throw new NotFoundException("No such car: id="+id);
+      throw new NotFoundException("No such car (id=" + id + ")");
     }
     return car;
   }
 
   @Override
-  public CarReservation reserve(CarReservation reservation) {
+  public CarReservation makeAReservation(CarReservation reservation) {
     Long id = reservation.getCar() != null ? reservation.getCar().getId() : 0L;
-    try {
-      Car car = getCar(id);
-      reservation.setCar(car);
-    } catch (NotFoundException ex) {
+    Car car = carRepository.findById(id);
+    if (car == null) {
       throw new IllegalArgumentException(
-          "Reservation failed with the reason being: " + ex.getMessage());
+          "Reservation failed with the reason being: No such car (id=" + id + ")");
     }
     return carReservationRepository.save(reservation);
+  }
+
+  @Override
+  public List<CarReservation> getReservationsByCar(long carId) {
+    Car car = getCar(carId);
+    return carReservationRepository.findByCar(car);
   }
 
 }

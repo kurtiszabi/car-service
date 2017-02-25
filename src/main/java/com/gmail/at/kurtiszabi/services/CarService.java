@@ -9,8 +9,10 @@ public interface CarService {
 
   List<Car> getCars();
 
-  Car getCar(Long id);
+  Car getCar(long id);
 
-  CarReservation reserve(CarReservation reservation);
+  CarReservation makeAReservation(CarReservation reservation);
+
+  List<CarReservation> getReservationsByCar(long carId);
 
 }

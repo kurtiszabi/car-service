@@ -8,7 +8,7 @@ public interface CarRepository {
 
   Car save(Car entity);
 
-  Car findById(Long id);
+  Car findById(long id);
 
   List<Car> findAll();
 

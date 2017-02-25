@@ -22,7 +22,7 @@ public class CarReservationRepositoryImpl extends Repository<CarReservation>
 
   @Override
   public List<CarReservation> findByCar(Car car) {
-    return store.values().stream().filter(c -> Objects.equals(c, car)).collect(toList());
+    return store.values().stream().filter(c -> Objects.equals(c.getCar(), car)).collect(toList());
   }
 
 }

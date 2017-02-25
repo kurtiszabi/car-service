@@ -17,7 +17,7 @@ public class CarRepositoryImpl extends Repository<Car> implements CarRepository 
   }
 
   @Override
-  public Car findById(Long id) {
+  public Car findById(long id) {
     return store.get(id);
   }
 
