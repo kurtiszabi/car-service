@@ -57,6 +57,6 @@ public class GetCarsTest extends CarserviceApplicationTests {
     assertThat(details.getManufacturer(), equalTo("Toyota"));
     assertThat(details.getColor(), equalTo("white"));
     assertThat(details.getModel(), equalTo("RAV4"));
-    assertThat(details.getManufacuted(), equalTo(LocalDate.of(2017, 2, 25)));
+    assertThat(details.getManufactured(), equalTo(LocalDate.of(2017, 2, 25)));
   }
 }

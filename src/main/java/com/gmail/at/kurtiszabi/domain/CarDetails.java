@@ -8,7 +8,7 @@ public class CarDetails {
 
   private String model;
   
-  private LocalDate manufacuted;
+  private LocalDate manufactured;
   
   private String color;
 
@@ -28,12 +28,12 @@ public class CarDetails {
     this.model = model;
   }
 
-  public LocalDate getManufacuted() {
-    return manufacuted;
+  public LocalDate getManufactured() {
+    return manufactured;
   }
 
-  public void setManufacuted(LocalDate manufacuted) {
-    this.manufacuted = manufacuted;
+  public void setManufactured(LocalDate manufacuted) {
+    this.manufactured = manufacuted;
   }
 
   public String getColor() {
@@ -47,7 +47,7 @@ public class CarDetails {
   @Override
   public String toString() {
     return "CarDetails [manufacturer=" + manufacturer + ", model=" + model + ", manufacuted="
-        + manufacuted + "]";
+        + manufactured + "]";
   }
 
 }

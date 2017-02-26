@@ -10,8 +10,34 @@
 <body ng-app="mainApp">	
 	<div ng-controller="CarServiceController as service">
 		<h1>{{pageTitle}}</h1>
-		
-	
+		<table>			
+			<tr ng-repeat="car in service.cars">
+				<td>{{car.details.manufacturer}}</td>
+				<td>{{car.details.model}}</td>
+				<td>{{car.details.manufactured}}</td>
+				<td><button ng-click="service.load(car.id)">select</button></td>
+			</tr>
+		</table>		
+		<div ng-if="service.selected != null">
+			<h2>Car Details</h2>
+			<dl>
+				<dt>Model</dt>
+				<dd>{{service.selected.details.manufacturer}} - {{service.selected.details.model}}</dd>
+				<dt>Year</dt>
+				<dd>{{service.selected.details.manufactured}}</dd>
+				<dt>Color</dt>
+				<dd>{{service.selected.details.color}}</dd>
+			</dl>
+			
+			<h2>Reservation Details</h2>
+			<form>
+				<label for="username">Your Name</label>
+				<input type="text" id="username" ng-model="service.reservation.username" /><br/>
+				<label for="submit">Submit</label>
+				<button id="submit" ng-click="service.makeReservation()">Reserve</button>
+			</form>
+			
+		</div>
 	</div>
 </body>
 </html>

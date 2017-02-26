@@ -62,7 +62,7 @@ public class RepositoryConfiguration {
     details.setColor("white");
     details.setManufacturer("Toyota");
     details.setModel("RAV4");
-    details.setManufacuted(LocalDate.of(2017, 2, 25));
+    details.setManufactured(LocalDate.of(2017, 2, 25));
     toyota.setDetails(details);
     return toyota;
   }
@@ -73,7 +73,7 @@ public class RepositoryConfiguration {
     details.setColor("blue");
     details.setManufacturer("Dacia");
     details.setModel("1300");
-    details.setManufacuted(LocalDate.of(2073, 1, 1));
+    details.setManufactured(LocalDate.of(2073, 1, 1));
     dacia.setDetails(details);
     return dacia;
   }
@@ -84,7 +84,7 @@ public class RepositoryConfiguration {
     details.setColor("maroon");
     details.setManufacturer("Ford");
     details.setModel("Lincoln Continental");
-    details.setManufacuted(LocalDate.of(2061, 10, 4));
+    details.setManufactured(LocalDate.of(2061, 10, 4));
     ford.setDetails(details);
     return ford;
   }
@@ -95,7 +95,7 @@ public class RepositoryConfiguration {
     details.setColor("gray");
     details.setManufacturer("Nissan");
     details.setModel("Qashqai");
-    details.setManufacuted(LocalDate.of(2017, 1, 1));
+    details.setManufactured(LocalDate.of(2017, 1, 1));
     nissan.setDetails(details);
     return nissan;
   }
