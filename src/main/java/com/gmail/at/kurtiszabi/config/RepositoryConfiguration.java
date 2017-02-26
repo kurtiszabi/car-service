@@ -52,6 +52,7 @@ public class RepositoryConfiguration {
     cars.add(getToyota());
     cars.add(getDacia());
     cars.add(getFord());
+    cars.add(getNissan());
     return cars;
   }
 
@@ -86,6 +87,17 @@ public class RepositoryConfiguration {
     details.setManufacuted(LocalDate.of(2061, 10, 4));
     ford.setDetails(details);
     return ford;
+  }
+
+  private Car getNissan() {
+    Car nissan = new Car();
+    CarDetails details = new CarDetails();
+    details.setColor("gray");
+    details.setManufacturer("Nissan");
+    details.setModel("Qashqai");
+    details.setManufacuted(LocalDate.of(2017, 1, 1));
+    nissan.setDetails(details);
+    return nissan;
   }
 
 }

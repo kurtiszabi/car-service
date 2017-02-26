@@ -178,11 +178,6 @@ public class SaveReservationTest extends CarserviceApplicationTests {
         allOf(containsString("Reservation failed"), containsString("already booked")));
   }
 
-  private Response trySavingReservation(CarReservation res) {
-    Response response = jsonRequest(res).post("cars/{carId}/reservations", res.getCar().getId());
-    return response;
-  }
-
   private CarReservation saveReservation(CarReservation res) {
     Response response = trySavingReservation(res);
     response.then().statusCode(200);

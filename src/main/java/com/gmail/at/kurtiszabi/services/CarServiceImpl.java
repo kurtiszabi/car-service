@@ -48,9 +48,11 @@ public class CarServiceImpl implements CarService {
       throw new IllegalArgumentException(
           "Reservation failed with the reason being: no such car (id=" + id + ")");
     }
-    checkInterleavingReservations(reservation, car);
     checkPermissonForTargetCountry(reservation, car);
-    return carReservationRepository.save(reservation);
+    synchronized (car) {
+      checkInterleavingReservations(reservation, car);
+      return carReservationRepository.save(reservation);
+    }
   }
 
   private void checkPermissonForTargetCountry(CarReservation reservation, Car car) {
