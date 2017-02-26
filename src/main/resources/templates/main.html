@@ -31,9 +31,38 @@
 			
 			<h2>Reservation Details</h2>
 			<form>
-				<label for="username">Your Name</label>
+				<label for="username">Your Name</label><br/>
 				<input type="text" id="username" ng-model="service.reservation.username" /><br/>
-				<label for="submit">Submit</label>
+				<label>From</label><br/>
+				<span>year/month/day</span>
+				<select ng-model="service.reservation.fromYear" ng-options="y for y in years"></select>
+				<select ng-model="service.reservation.fromMonth" ng-options="m for m in months"></select>
+				<select ng-model="service.reservation.fromDay" ng-options="d for d in days"></select>
+				<span> hour/minute</span>
+				<select ng-model="service.reservation.fromHour" ng-options="h for h in hours"></select>
+				<select ng-model="service.reservation.fromMinute" ng-options="m for m in minutes"></select>
+				
+				<br/>
+				<label>To</label><br/>
+				<span>year/month/day</span>
+				<select ng-model="service.reservation.toYear" ng-options="y for y in years"></select>
+				<select ng-model="service.reservation.toMonth" ng-options="m for m in months"></select>
+				<select ng-model="service.reservation.toDay" ng-options="d for d in days"></select>
+				<span> hour/minute</span>
+				<select ng-model="service.reservation.toHour" ng-options="h for h in hours"></select>
+				<select ng-model="service.reservation.toMinute" ng-options="m for m in minutes"></select>
+				
+				<br/>
+				<label>Going where?</label><br/>
+				<select ng-model="service.reservation.country">
+					<option value="HU">Hungary</option>
+					<option value="SK">Slovakia</option>
+					<option value="US">United States</option>
+					<option value="RU">Russia</option>
+				</select>
+				
+				<br/>
+				<label for="submit">Submit</label><br/>
 				<button id="submit" ng-click="service.makeReservation()">Reserve</button>
 			</form>
 			

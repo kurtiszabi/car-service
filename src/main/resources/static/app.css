@@ -2,3 +2,7 @@ body {
 	font-family: Arial, helvetica, "sans-serif";
 }
 
+label, dt {
+	font-weight: bold;
+}
+
