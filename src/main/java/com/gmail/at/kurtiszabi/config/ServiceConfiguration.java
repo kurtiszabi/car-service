@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.gmail.at.kurtiszabi.external.ExternalService;
+import com.gmail.at.kurtiszabi.external.ExternalServiceImpl;
 import com.gmail.at.kurtiszabi.repositories.CarRepository;
 import com.gmail.at.kurtiszabi.repositories.CarReservationRepository;
 import com.gmail.at.kurtiszabi.services.CarService;
@@ -20,7 +22,12 @@ public class ServiceConfiguration {
 
   @Bean
   public CarService carServiceImpl() {
-    return new CarServiceImpl(carRepository, carReservationRepository);
+    return new CarServiceImpl(carRepository, carReservationRepository, externalService());
+  }
+
+  @Bean
+  public ExternalService externalService() {
+    return new ExternalServiceImpl();
   }
 
 }

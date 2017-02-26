@@ -33,6 +33,8 @@ public class SaveReservationTest extends CarserviceApplicationTests {
 
   private static final long KNOWN_CAR_ID = 1L;
 
+  private static final long DACIA_CAR_ID = 2L;
+
   private static long reservationId;
 
   private static LocalDateTime from;
@@ -55,6 +57,7 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     res.setFrom(from);
     to = now.plusDays(2);
     res.setTo(to);
+    res.setCountry("HU");
     return res;
   }
 
@@ -123,19 +126,6 @@ public class SaveReservationTest extends CarserviceApplicationTests {
   }
 
   @Test
-  public void G_testSavingReservationForANonExistingCar() {
-    assumeThat(reservationId, greaterThan(0L));
-    CarReservation res = createDefaultReservation();
-    Car nonExistingCar = new Car();
-    nonExistingCar.setId(0L);
-    res.setCar(nonExistingCar);
-    Response response = trySavingReservation(res);
-    response.then().statusCode(400);
-    assertThat(response.body().jsonPath().getString("message"),
-        allOf(containsString("Reservation failed"), containsString("no such car")));
-  }
-
-  @Test
   public void H_testSavingReservationBeforeAnExistingOne() {
     assumeThat(reservationId, greaterThan(0L));
     CarReservation res = createDefaultReservation();
@@ -151,6 +141,35 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     res.setFrom(to.plusDays(1));
     res.setTo(to.plusDays(2));
     saveReservation(res);
+  }
+
+  @Test
+  public void G_testSavingReservationForANonExistingCar() {
+    CarReservation res = createDefaultReservation();
+    Car nonExistingCar = new Car();
+    nonExistingCar.setId(0L);
+    res.setCar(nonExistingCar);
+    Response response = trySavingReservation(res);
+    response.then().statusCode(400);
+    assertThat(response.body().jsonPath().getString("message"),
+        allOf(containsString("Reservation failed"), containsString("no such car")));
+  }
+
+  @Test
+  public void J_testSavingReservationWithAnIllegalCombinationOfCarAndCountry() {
+    Car dacia = getCarById(DACIA_CAR_ID);
+    assumeThat(dacia.getDetails().getManufacturer(), equalTo("Dacia"));
+    CarReservation reservation = createDefaultReservation();
+    reservation.setCar(dacia);
+    reservation.setCountry("US");
+    Response response = trySavingReservation(reservation);
+    assertNotPermitted(response);
+  }
+
+  private void assertNotPermitted(Response response) {
+    response.then().statusCode(400);
+    assertThat(response.body().jsonPath().getString("message"), allOf(
+        containsString("Reservation failed"), containsString("selected car is not permitted")));
   }
 
   private void assertAlreadyReserved(Response response) {

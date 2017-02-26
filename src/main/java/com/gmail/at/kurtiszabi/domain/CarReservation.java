@@ -14,6 +14,8 @@ public class CarReservation {
   
   private Car car;
 
+  private String country;
+
   public Long getId() {
     return id;
   }
@@ -54,12 +56,17 @@ public class CarReservation {
     this.car = car;
   }
 
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
   @Override
   public String toString() {
     return "CarReservation [id=" + id + ", from=" + from + ", to=" + to + ", user=" + user
-        + ", car=" + (car != null ? car.getId() : "null") + "]";
+        + ", country=" + country + ", car=" + (car != null ? car.getId() : "null") + "]";
   }
-
-
-
 }

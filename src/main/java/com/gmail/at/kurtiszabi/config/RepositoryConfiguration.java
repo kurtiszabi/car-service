@@ -55,17 +55,6 @@ public class RepositoryConfiguration {
     return cars;
   }
 
-  private Car getFord() {
-    Car ford = new Car();
-    CarDetails details = new CarDetails();
-    details.setColor("maroon");
-    details.setManufacturer("Ford");
-    details.setModel("Lincoln Continental");
-    details.setManufacuted(LocalDate.of(2061, 10, 4));
-    ford.setDetails(details);
-    return ford;
-  }
-
   private Car getToyota() {
     Car toyota = new Car();
     CarDetails details = new CarDetails();
@@ -86,6 +75,17 @@ public class RepositoryConfiguration {
     details.setManufacuted(LocalDate.of(2073, 1, 1));
     dacia.setDetails(details);
     return dacia;
+  }
+
+  private Car getFord() {
+    Car ford = new Car();
+    CarDetails details = new CarDetails();
+    details.setColor("maroon");
+    details.setManufacturer("Ford");
+    details.setModel("Lincoln Continental");
+    details.setManufacuted(LocalDate.of(2061, 10, 4));
+    ford.setDetails(details);
+    return ford;
   }
 
 }

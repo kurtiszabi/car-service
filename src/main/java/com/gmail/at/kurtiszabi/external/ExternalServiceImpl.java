@@ -15,13 +15,17 @@ public class ExternalServiceImpl implements ExternalService {
   {
     forbiddenManufacturers.put("US", "Dacia");
     forbiddenManufacturers.put("US", "Volkswagen");
-    forbiddenManufacturers.put("Russia", "Ford");
-    forbiddenManufacturers.put("Russia", "GM");
+    forbiddenManufacturers.put("RU", "Ford");
+    forbiddenManufacturers.put("RU", "GM");
   }
 
   @Override
-  public boolean isPermitted(CarDetails details, String country) throws InterruptedException {
-    Thread.currentThread().sleep(random.nextInt() % 5000);
+  public boolean isPermitted(CarDetails details, String country) {
+    try {
+      Thread.currentThread().sleep(Math.abs(random.nextInt()) % 3000);
+    } catch (InterruptedException e) {
+      throw new IllegalStateException("Service interrupted");
+    }
     return !forbiddenManufacturers.get(country).contains(details.getManufacturer());
   }
 
