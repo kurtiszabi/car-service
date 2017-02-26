@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<meta charset="UTF-8"></meta>
+	<title>Car Service - Szabolcs Kürti</title>
+	<script type="text/javascript" th:src="@{/static/angular-1.6.2.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/app.js}"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/static/app.css}" />
 </head>
-<body>
-
+<body ng-app="mainApp">	
+	<div ng-controller="CarServiceController as service">
+		<h1>{{pageTitle}}</h1>
+		
+	
+	</div>
 </body>
 </html>
