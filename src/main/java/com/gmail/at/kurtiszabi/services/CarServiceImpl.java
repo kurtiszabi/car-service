@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import com.gmail.at.kurtiszabi.domain.Car;
 import com.gmail.at.kurtiszabi.domain.CarReservation;
 import com.gmail.at.kurtiszabi.exceptions.NotFoundException;
+import com.gmail.at.kurtiszabi.exceptions.ReservationException;
 import com.gmail.at.kurtiszabi.external.ExternalService;
 import com.gmail.at.kurtiszabi.repositories.CarRepository;
 import com.gmail.at.kurtiszabi.repositories.CarReservationRepository;
@@ -45,8 +46,10 @@ public class CarServiceImpl implements CarService {
     Long id = reservation.getCar() != null ? reservation.getCar().getId() : 0L;
     Car car = carRepository.findById(id);
     if (car == null) {
-      throw new IllegalArgumentException(
-          "Reservation failed with the reason being: no such car (id=" + id + ")");
+      throw new ReservationException("No such car (id=" + id + ")");
+    }
+    if (!reservation.getFrom().isBefore(reservation.getTo())) {
+      throw new ReservationException("Invalid time span");
     }
     checkPermissonForTargetCountry(reservation, car);
     synchronized (car) {
@@ -61,8 +64,7 @@ public class CarServiceImpl implements CarService {
       isPermitted = externalService.isPermitted(car.getDetails(), reservation.getCountry());
     }
     if (!isPermitted) {
-      throw new IllegalArgumentException(
-          "Reservation failed with the reason being: selected car is not permitted in the target country");
+      throw new ReservationException("Selected car is not permitted in the target country");
     }
   }
 
@@ -72,8 +74,7 @@ public class CarServiceImpl implements CarService {
             && !r.getFrom().isAfter(reservation.getTo()));
     boolean exists = carReservationRepository.exists(predicate);
     if (exists) {
-      throw new IllegalArgumentException(
-          "Reservation failed with the reason being: already booked");
+      throw new ReservationException("Already booked");
     }
   }
 

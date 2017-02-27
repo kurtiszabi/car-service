@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.gmail.at.kurtiszabi.exceptions.NotFoundException;
+import com.gmail.at.kurtiszabi.exceptions.ReservationException;
 import com.google.common.collect.ImmutableMap;
 
 @ControllerAdvice
@@ -22,6 +23,12 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
   @ExceptionHandler({IllegalArgumentException.class})
   public ResponseEntity<Object> handleIllegalArgumentException(Exception ex, WebRequest request) {
+    return new ResponseEntity<Object>(ImmutableMap.of("message", ex.getMessage()),
+        new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler({ReservationException.class})
+  public ResponseEntity<Object> handleReservationException(Exception ex, WebRequest request) {
     return new ResponseEntity<Object>(ImmutableMap.of("message", ex.getMessage()),
         new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }

@@ -92,7 +92,7 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     reservation.setFrom(from.plusHours(1));
     reservation.setTo(to.minusHours(1));
     Response response = trySavingReservation(reservation);
-    assertAlreadyReserved(response);
+    assertAlreadyBooked(response);
   }
 
   @Test
@@ -102,7 +102,7 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     reservation.setFrom(from.minusHours(1));
     reservation.setTo(to.plusHours(1));
     Response response = trySavingReservation(reservation);
-    assertAlreadyReserved(response);
+    assertAlreadyBooked(response);
   }
 
   @Test
@@ -112,7 +112,7 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     reservation.setFrom(from.minusDays(1));
     reservation.setTo(from.plusHours(1));
     Response response = trySavingReservation(reservation);
-    assertAlreadyReserved(response);
+    assertAlreadyBooked(response);
   }
 
   @Test
@@ -122,7 +122,7 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     reservation.setFrom(to.minusHours(1));
     reservation.setTo(to.plusDays(1));
     Response response = trySavingReservation(reservation);
-    assertAlreadyReserved(response);
+    assertAlreadyBooked(response);
   }
 
   @Test
@@ -150,9 +150,7 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     nonExistingCar.setId(0L);
     res.setCar(nonExistingCar);
     Response response = trySavingReservation(res);
-    response.then().statusCode(400);
-    assertThat(response.body().jsonPath().getString("message"),
-        allOf(containsString("Reservation failed"), containsString("no such car")));
+    assertReservationFailed(response, "No such car");
   }
 
   @Test
@@ -163,19 +161,27 @@ public class SaveReservationTest extends CarserviceApplicationTests {
     reservation.setCar(dacia);
     reservation.setCountry("US");
     Response response = trySavingReservation(reservation);
-    assertNotPermitted(response);
+    assertReservationFailed(response, "Selected car is not permitted");
   }
 
-  private void assertNotPermitted(Response response) {
-    response.then().statusCode(400);
-    assertThat(response.body().jsonPath().getString("message"), allOf(
-        containsString("Reservation failed"), containsString("selected car is not permitted")));
+  @Test
+  public void K_testSavingReservationsWithAnInvalidTimeSpan() {
+    CarReservation res = createDefaultReservation();
+    LocalDateTime from = res.getFrom();
+    res.setFrom(res.getTo());
+    res.setTo(from);
+    Response response = trySavingReservation(res);
+    assertReservationFailed(response, "Invalid time span");
   }
 
-  private void assertAlreadyReserved(Response response) {
+  private void assertAlreadyBooked(Response response) {
+    assertReservationFailed(response, "Already booked");
+  }
+
+  private void assertReservationFailed(Response response, String reason) {
     response.then().statusCode(400);
     assertThat(response.body().jsonPath().getString("message"),
-        allOf(containsString("Reservation failed"), containsString("already booked")));
+        allOf(containsString("Reservation failed"), containsString(reason)));
   }
 
   private CarReservation saveReservation(CarReservation res) {
